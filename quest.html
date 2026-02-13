@@ -1,0 +1,157 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>💖</title>
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  background: #fdf6e3; /* нежно-молочный фон */
+  font-family: Arial, sans-serif;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+  color:white;
+  text-align:center;
+  text-shadow:0 6px 18px rgba(0,0,0,0.25);
+
+  opacity:0;
+  transition:opacity .6s ease;
+}
+
+body.loaded{
+  opacity:1;
+}
+
+video{
+  width:190px;
+  border-radius:16px;
+  margin-bottom:25px;
+  box-shadow:0 20px 50px rgba(0,0,0,0.35);
+}
+
+h1{
+  margin-bottom:30px;
+  color: #222222;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3), 0 0 6px rgba(255,255,255,0.5);
+  font-size: 28px;
+  font-weight:600;
+  text-align:center;
+}
+
+.buttons{
+  display:flex;
+  gap:20px;
+}
+
+button, .yes{
+  padding:15px 35px;
+  font-size:20px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  transition:0.2s;
+  text-decoration:none;
+  box-shadow:0 10px 25px rgba(0,0,0,0.3);
+}
+
+.yes{
+  background:#ff4d6d;
+  color:white;
+}
+
+.yes:hover{
+  transform:scale(1.1);
+}
+
+.no{
+  background:white;
+  color:#ff4d6d;
+  position:relative;
+}
+
+/* Сердечки */
+.hearts{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+}
+
+.heart{
+  position:absolute;
+  font-size:24px;
+  animation: fall linear forwards;
+}
+
+@keyframes fall{
+  to{
+    transform:translateY(100vh) rotate(360deg);
+    opacity:0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="hearts" id="hearts"></div>
+
+<video autoplay loop muted playsinline preload="none">
+  <source src="img/cat_quest.mp4" type="video/mp4">
+</video>
+
+<h1>Ты точно хочешь открыть? 💌</h1>
+
+<div class="buttons">
+  <a href="love.html" class="yes">Да 💖</a>
+  <button class="no" id="noBtn">Нет</button>
+</div>
+
+<script>
+window.onload = () => document.body.classList.add('loaded');
+
+const btn = document.getElementById('noBtn');
+btn.addEventListener('mouseenter', () => {
+  const x = (Math.random() - 0.5) * 600;
+  const y = (Math.random() - 0.5) * 400;
+  btn.style.transform = `translate(${x}px, ${y}px)`;
+});
+
+const hearts = document.getElementById('hearts');
+const symbols = ['💖','💗','💕','💓','❤️'];
+
+function createHeart(){
+  if (hearts.children.length > 25) return;
+  const el = document.createElement('div');
+  el.className = 'heart';
+  el.innerHTML = symbols[Math.floor(Math.random()*symbols.length)];
+  el.style.left = Math.random()*100 + 'vw';
+  el.style.animationDuration = (4+Math.random()*4) + 's';
+  hearts.appendChild(el);
+  setTimeout(()=>el.remove(),8000);
+}
+setInterval(createHeart,700);
+
+document.querySelectorAll('a').forEach(link=>{
+  link.addEventListener('click', function(e){
+    e.preventDefault();
+    // плавное затухание
+    document.body.style.opacity = 0;
+    setTimeout(()=> {
+      window.location = this.href;
+    }, 600); // совпадает с transition opacity
+  });
+});
+
+</script>
+
+</body>
+</html>

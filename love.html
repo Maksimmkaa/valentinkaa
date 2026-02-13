@@ -1,0 +1,157 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Для тебя 💌</title>
+<style>
+/* Подключаем шрифт Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+/* Общие стили */
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  flex-direction: column;
+  justify-content:center;
+  align-items:center;
+  font-family: 'Poppins', sans-serif;
+  overflow:hidden;
+  background: #fdf6e3; /* нежно-молочный фон */
+  opacity:0; /* изначально невидимо */
+  transition: opacity 0.6s ease;
+}
+
+body.loaded{
+  opacity:1; /* появление */
+}
+
+/* Видео на фоне */
+video{
+  position:fixed;
+  top:37%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  width:300px;
+  border-radius:16px;
+  box-shadow:0 20px 50px rgba(0,0,0,0.35);
+  z-index:0;
+}
+
+/* Текст поверх видео */
+.love-box{
+  position:relative;
+  z-index:1;
+  padding:20px 40px;
+  background:white;
+  border-radius:14px;
+  font-size:20px;
+  color:#222222;
+  margin-top: 240px;
+  font-weight:600;
+  box-shadow:0 25px 60px rgba(0,0,0,0.35);
+  margin-bottom:20px;
+}
+
+/* Кнопка */
+.next-btn {
+  z-index:1;
+  padding:12px 36px;
+  font-size:18px;
+  font-weight:600;
+  border:none;
+  border-radius:30px;
+  background:#ff4d6d;
+  color:white;
+  cursor:pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow:0 10px 25px rgba(0,0,0,0.3);
+}
+
+.next-btn:hover {
+  transform: scale(1.1);
+  box-shadow:0 15px 30px rgba(0,0,0,0.35);
+}
+
+.next-btn:active {
+  transform: scale(0.95);
+  box-shadow:0 8px 20px rgba(0,0,0,0.25);
+}
+
+/* Контейнер для сердечек */
+.hearts{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  z-index:10;
+}
+
+/* Сердечки */
+.heart{
+  position:absolute;
+  animation: fall linear forwards;
+}
+
+/* Анимация падения */
+@keyframes fall{
+  0%{
+    transform:translateY(0) rotate(0deg);
+    opacity:1;
+  }
+  100%{
+    transform:translateY(110vh) rotate(360deg);
+    opacity:0;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="hearts" id="hearts"></div>
+
+<video autoplay loop muted playsinline>
+  <source src="img/daddy.mp4" type="video/mp4">
+  Ваш браузер не поддерживает видео.
+</video>
+
+<div class="love-box">
+  С днем святого Валентина, моя маленькая девочка! 💌
+</div>
+
+<button class="next-btn" onclick="location.href='happy.html'">Далее</button>
+
+<script>
+const hearts = document.getElementById('hearts');
+const symbols = ['❤️','💖','💗','💕','💓'];
+
+function createHeart() {
+  const heart = document.createElement('div');
+  heart.className = 'heart';
+  heart.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+  heart.style.left = Math.random() * 100 + 'vw';
+  heart.style.top = '-30px';
+  heart.style.animationDuration = (4 + Math.random() * 4) + 's';
+  heart.style.fontSize = (16 + Math.random() * 20) + 'px';
+  hearts.appendChild(heart);
+  setTimeout(() => heart.remove(), 8000);
+}
+
+setInterval(createHeart, 300);
+
+window.onload = () => document.body.classList.add('loaded');
+
+// плавное затухание при переходе
+document.getElementById('backBtn').addEventListener('click', function(e){
+  e.preventDefault();
+  document.body.style.opacity = 0; // плавное исчезновение
+  setTimeout(()=> window.location = this.href, 600); // ждём окончания transition
+});
+
+</script>
+
+</body>
+</html>
